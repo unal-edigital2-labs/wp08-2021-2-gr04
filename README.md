@@ -41,7 +41,7 @@ En esta seccion se incluyen los archivos usados para realizar la respectiva inte
 
 ## Problemas presentados
 
-Desarrollar firmware en C manualmente puede no ser muy bueno si no se tienen buenas prácticas de programación y optimización. Pues se puede llegar a hacer un código que funciones en un IDE pero no al implementarlo por cuestiones de capacidad de almacenamiento
+Desarrollar firmware en C manualmente puede no ser muy bueno si no se tienen buenas prácticas de programación y optimización. Pues se puede llegar a hacer un código que funcione en un IDE pero no al implementarlo por cuestiones de capacidad de almacenamiento
 
 ## Pruebas funcionales
 
