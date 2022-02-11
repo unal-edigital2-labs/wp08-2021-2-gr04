@@ -28,6 +28,8 @@ En esta sección se describen los periféricos usados para la elaboración del r
 
 En esta seccion se incluyen los archivos usados para realizar la respectiva integracion de los archivos de hardware a el SOC. Ademas, tambien se incluyen el main.c, la cual se encarga de controlar el robot cartografo desde software, y la respectiva explicacion de funcionamiento para cada una de las funciones usadas.
 
+## Problemas presentados
+
 ## Pruebas funcionales
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=XLlC-236xpk
