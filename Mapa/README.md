@@ -334,6 +334,8 @@ Para identificar que hay un objeto uniforme en la cámara se evalúa la matriz d
 
 Así, el triángulo se diferencia de las demás figuras en que el ancho incremental es mayor que 100; el cuadrado se diferencia del círculo en que su Ancho Medio es semejante a su Ancho Incremental, mientras que el del círculo su Ancho Medio es más grande que su Ancho incremental, en otras palabras, el cuadrado a diferencia del círculo varía muy poco su ancho.
 
+![Screen](/images/ejmterna.png)
+
 ### Identificación de color
 
 Se lleva en un registro la sumatoria de los componentes cromáticos de cada grupo de pixeles válidos que hay en la matriz, al final, la componente cuyo valor sea mayor será el color predominante y la salida para este aspecto.
