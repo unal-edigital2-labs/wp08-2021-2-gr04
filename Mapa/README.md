@@ -338,172 +338,159 @@ Así, el triángulo se diferencia de las demás figuras en que el ancho incremen
 
 Se lleva en un registro la sumatoria de los componentes cromáticos de cada grupo de pixeles válidos que hay en la matriz, al final, la componente cuyo valor sea mayor será el color predominante y la salida para este aspecto.
 
-### test_cam
+### CamaraVGADriver
 
-Este es el modulo top entregado al cual se le agrego el modulo cam_read y se realizaron algunas modificaciones para el funcionamiento.
+Este es el modulo top entregado al cual se le agrego el modulo OV767, VGA_driver y los modulos correspondientes al buffer de la camara.
 
 
 ``` verilog
-module test_cam(
-    input wire clk,           // board clock: 32 MHz quacho 100 MHz nexys4 
-    input wire rst,         	// reset button
-
-	// VGA input/output  
-    output wire VGA_Hsync_n,  // horizontal sync output
-    output wire VGA_Vsync_n,  // vertical sync output
-    output wire [3:0] VGA_R,	// 4-bit VGA red output
-    output wire [3:0] VGA_G,  // 4-bit VGA green output
-    output wire [3:0] VGA_B,  // 4-bit VGA blue output
+module CamaraVGADriver(
+	input Clock,
+	input Reset,
 	
-	//CAMARA input/output
+	//Camara
+	input Pclock,
+	input Href,
+	input Vsync_cam,
+	input [7:0] Data,
+	output XClock,
 	
-	output wire CAM_xclk,		// System  clock imput
-	output wire CAM_pwdn,		// power down mode 
-	output wire CAM_reset,		// clear all registers of cam
-	
-	// colocar aqui las entras  y salidas de la camara  que hace falta
-
-	input wire CAM_pclk,
-	input wire CAM_vsync,
-	input wire CAM_href,
-	input wire [7:0] CAM_px_data
-
+	//Mapa Ram
+	input [3:0] MapaData,
+	input [5:0] MapaAddr,
+	input MapaWrite,
 		
+	//Procesamiento de imagen
+	output wire [1:0] Forma,
+	output wire [1:0] PromedioColor,
+	
+	//VGA
+	output [11:0] RGB,
+	output Hsync,
+	output Vsync
 );
 
-// TAMAÑO DE ADQUISICIÓN DE LA CAMARA 
-parameter CAM_SCREEN_X = 160;
-parameter CAM_SCREEN_Y = 120;
+//Write Cam
+wire [11:0] PixelDataCam;
+wire [14:0] PixelAddrCam;
+wire WPixelCam;
 
-localparam AW = 15; // LOG2(CAM_SCREEN_X*CAM_SCREEN_Y)
-localparam DW = 8;
+//VGA-Cam
+wire [11:0] DataCamOut;
+wire [14:0] AddrCamOut; 
 
-// El color es RGB 332
-localparam RED_VGA =   8'b11100000;
-localparam GREEN_VGA = 8'b00011100;
-localparam BLUE_VGA =  8'b00000011;
-
-
-// Clk 
-wire clk32M;
-wire clk25M;
-wire clk24M;
-
-// Conexión dual por ram
-
-wire  [AW-1: 0] DP_RAM_addr_in;  
-wire  [DW-1: 0] DP_RAM_data_in;
-wire DP_RAM_regW;
-
-reg  [AW-1: 0] DP_RAM_addr_out;  
-	
-// Conexión VGA Driver
-wire [DW-1:0]data_mem;	   // Salida de dp_ram al driver VGA
-wire [DW-1:0]data_RGB332;  // salida del driver VGA al puerto
-wire [9:0]VGA_posX;		   // Determinar la pos de memoria que viene del VGA
-wire [8:0]VGA_posY;		   // Determinar la pos de memoria que viene del VGA
-
-
-/* ****************************************************************************
-la pantalla VGA es RGB 444, pero el almacenamiento en memoria se hace 332
-por lo tanto, los bits menos significactivos deben ser cero
-**************************************************************************** */
-assign VGA_R = {data_RGB332[7:5],1'b0};
-assign VGA_G = {data_RGB332[4:2],1'b0};
-assign VGA_B = {data_RGB332[1:0],2'b00};
+//VGA 
+wire [11:0] PixelData;
+wire [9:0] Xpixel;
+wire [8:0] Ypixel;
 
 
 
-/* ****************************************************************************
-Asignación de las señales de control xclk pwdn y reset de la camara 
-**************************************************************************** */
-
-assign CAM_xclk=  clk24M;
-assign CAM_pwdn=  0;			// power down mode 
-assign CAM_reset=  0;
+reg [11:0] Colores=1'b0;
+reg [2:0] CounterX=1'b0;
+reg [2:0] CounterY=1'b0;
+wire [5:0] AddrMapaOut;
+wire [3:0] DataMapaOut;
 
 
 
-/* ****************************************************************************
-  Este bloque se debe modificar según sea le caso. El ejemplo esta dado para
-  fpga Spartan6 lx9 a 32MHz.
-  usar "tools -> Core Generator ..."  y general el ip con Clocking Wizard
-  el bloque genera un reloj de 25Mhz usado para el VGA  y un relo de 24 MHz
-  utilizado para la camara , a partir de una frecuencia de 32 Mhz
-**************************************************************************** */
-//assign clk32M =clk;
+reg [11:0] ColoresProm=1'b0;
+reg [11:0] ColoresForma=1'b0;
+
+
+
+assign AddrMapaOut=(((Xpixel<10'd450)&&(Xpixel>10'd9)) &&	((Ypixel<10'd460)&&(Ypixel>10'd19)))?(CounterX+CounterY*4'd8):1'b0;
+assign AddrCamOut=(((Xpixel<10'd629)&&(Xpixel>10'd452)) &&	((Ypixel<9'd311)&&(Ypixel>9'd166)))?((Xpixel-10'd453)+(Ypixel-9'd167)*9'd176):1'b0; //Miramos si el pixel esta en el recuadro VALIDO Y solicitamos la dirección de memoria del pixel valido
+
+//Descomentar esto para activar en la pantalla el resultado del procesamiento de imagen
+
+assign PixelData=(((Xpixel==10'd591)&&(Ypixel<9'd271) && (Ypixel>9'd188)) || ((Xpixel==10'd490)&&(Ypixel<9'd271) && (Ypixel>9'd188)) || ((Ypixel==9'd271)&&(Xpixel<10'd591) && (Xpixel>10'd490)) || ((Ypixel==9'd188)&&(Xpixel<10'd591) && (Xpixel>10'd490)))?12'hF00:(((Xpixel<10'd629)&&(Xpixel>10'd452)) && ((Ypixel<9'd311)&&(Ypixel>9'd166)))?DataCamOut:((((Xpixel<10'd450)&&(Xpixel>10'd9)) &&	((Ypixel<10'd460)&&(Ypixel>10'd19)))?Colores:(Ypixel>10'd240)?ColoresProm:ColoresForma);
+
+//Primer condiciconal Zona valida 
+//Segundod condicional identifica pixel a dentro o fuera. Colores--> espacio restante abajo y luego otro espacio restante forma (arriba). 
+
+ImBuffer #(12, 15,"Im.mem") Camara (PixelDataCam, AddrCamOut, PixelAddrCam, WPixelCam, XClock, Pclock, DataCamOut);
+ImBufferv2 #(4, 6,"Mapa.mem") Mapa (MapaData, AddrMapaOut, MapaAddr, MapaWrite, Clock, Clock, DataMapaOut);
+
+
+VGA_Driver640x480 VGA(Reset, XClock, PixelData, RGB, Hsync, Vsync, Xpixel, Ypixel);
+
+OV7670 Cam(Reset, PixelDataCam, PixelAddrCam, WPixelCam, Pclock, Href, Vsync_cam, Data, PromedioColor,Forma);
+
 clk24_25_nexys4
   clk25_24(
-  .CLK_IN1(clk),
-  .CLK_OUT1(clk25M),
-  .CLK_OUT2(clk24M),
-  .RESET(rst)
+  .CLK_IN1(Clock),
+  .CLK_OUT1(XClock),
+  .CLK_OUT2(Clock24),
+  .RESET(Reset)
  );
 
 
-/* ****************************************************************************
-buffer_ram_dp buffer memoria dual port y reloj de lectura y escritura separados
-Se debe configurar AW  según los calculos realizados en el Wp01
-se recomiendia dejar DW a 8, con el fin de optimizar recursos  y hacer RGB 332
-**************************************************************************** */
-buffer_ram_dp #( AW,DW)
-	DP_RAM(  
-	.clk_w(CAM_pclk), 
-	.addr_in(DP_RAM_addr_in), 
-	.data_in(DP_RAM_data_in),
-	.regwrite(DP_RAM_regW), 
+//A continuación se hace un Zoom:v de pixeles
+always @ (Xpixel, Ypixel) begin
+		
+
+		if (((Xpixel<10'd450)&&(Xpixel>10'd9)) &&	((Ypixel<10'd460)&&(Ypixel>10'd19))) begin
 	
-	.clk_r(clk25M), 
-	.addr_out(DP_RAM_addr_out),
-	.data_out(data_mem)
-	);
-	
+			if(Xpixel<10'd65) CounterX=3'd0;
+			else if (Xpixel<10'd120) CounterX=3'd1;
+			else if (Xpixel<10'd175) CounterX=3'd2;
+			else if (Xpixel<10'd230) CounterX=3'd3;
+			else if (Xpixel<10'd285) CounterX=3'd4;
+			else if (Xpixel<10'd340) CounterX=3'd5;
+			else if (Xpixel<10'd395) CounterX=3'd6;
+			else if (Xpixel<10'd450) CounterX=3'd7;
+			
+			if(Ypixel<10'd75) CounterY=3'd0;
+			else if (Ypixel<10'd130) CounterY=3'd1;
+			else if (Ypixel<10'd185) CounterY=3'd2;
+			else if (Ypixel<10'd240) CounterY=3'd3;
+			else if (Ypixel<10'd295) CounterY=3'd4;
+			else if (Ypixel<10'd350) CounterY=3'd5;
+			else if (Ypixel<10'd405) CounterY=3'd6;
+			else if (Ypixel<10'd460) CounterY=3'd7;
+			
+		end
+			
+		case(DataMapaOut)
+		
+		3'b000:Colores=12'h000;
+		3'b001:Colores=12'h5FF;
+		3'b010:Colores=12'hAFc;
+		3'b011:Colores=12'hA0A;
+		3'b100:Colores=12'hA00;
+		3'b101:Colores=12'h0A0;
+		3'b110:Colores=12'h00A;
+		default:Colores=12'h000;
+		
+		endcase
+		
+		case(PromedioColor)
+		
+		2'b00:ColoresProm=12'h000;
+		2'b01:ColoresProm=12'hF00;
+		2'b10:ColoresProm=12'h0F0;
+		2'b11:ColoresProm=12'h00F;
+		default:ColoresProm=12'h000;
+		
+		endcase
+		
+		case(Forma)
+		
+		2'b00:ColoresForma=12'h000;
+		2'b01:ColoresForma=12'hF00;
+		2'b10:ColoresForma=12'h0F0;
+		2'b11:ColoresForma=12'h00F;
+		default:ColoresForma=12'h000;
+		
+		endcase
 
-/* ****************************************************************************
-VGA_Driver640x480
-**************************************************************************** */
-VGA_Driver640x480 VGA640x480
-(
-	.rst(rst),
-	.clk(clk25M), 				// 25MHz  para 60 hz de 640x480
-	.pixelIn(data_mem), 		// entrada del valor de color  pixel RGB 332 
-	.pixelOut(data_RGB332), // salida del valor pixel a la VGA 
-	.Hsync_n(VGA_Hsync_n),	// señal de sincronizaciÓn en horizontal negada
-	.Vsync_n(VGA_Vsync_n),	// señal de sincronizaciÓn en vertical negada 
-	.posX(VGA_posX), 			// posición en horizontal del pixel siguiente
-	.posY(VGA_posY) 			// posición en vertical  del pixel siguiente
 
-);
-
- 
-/* ****************************************************************************
-LÓgica para actualizar el pixel acorde con la buffer de memoria y el pixel de 
-VGA si la imagen de la camara es menor que el display  VGA, los pixeles 
-adicionales seran iguales al color del último pixel de memoria 
-**************************************************************************** */
-always @ (VGA_posX, VGA_posY) begin
-		if ((VGA_posX>CAM_SCREEN_X-1) || (VGA_posY>CAM_SCREEN_Y-1))
-			DP_RAM_addr_out=15'b111111111111111;
-		else
-	                DP_RAM_addr_out = VGA_posX + VGA_posY * CAM_SCREEN_X;
+			
 end
 
 
-/*****************************************************************************
-**************************************************************************** */
- cam_read #(AW)ov7076_565_to_332(
-		.pclk(CAM_pclk),
-		.rst(rst),
-		.vsync(CAM_vsync),
-		.href(CAM_href),
-		.px_data(CAM_px_data),
-
-		.mem_px_addr(DP_RAM_addr_in),
-		.mem_px_data(DP_RAM_data_in),
-		.px_wr(DP_RAM_regW)
-   );
-endmodule
-```
+endmodule```
 
 
 ### OV767
