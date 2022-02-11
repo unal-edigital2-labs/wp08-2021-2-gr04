@@ -1,7 +1,7 @@
 
 1. [ Cámara. ](#camara)
 2. [ Ultrasonido ](#us)
-3. [ Infrarojo ]
+3. [ Infrarojo ](#Infrarojo)
 4. [ Movimiento. ](#movimiento)
 
 ## Camara
