@@ -22,9 +22,7 @@ Se presenta documentación detallada de hardware y firmware, cada módulo descri
 
 ## [ Mapa de Memoria y Periféricos](https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/tree/main/Mapa)
 
-En esta sección se describen los periféricos usados para la elaboración del robot cartógrafo, sus espacios en memoria, el desarrollo tanto en software como en hardware y código asociado a cada uno de estos. Adicionalmente, se pueden encontrar los datasheets de estos componentes.
-
-En la presente sección se encuentran los diferentes perífericos que se usaron para la elaboración del robot cartógrafo, asi como también los respectivos espacios en memoria que fueron utilizados. Asi mismo, se incluye el hardware desarrollado para cada uno de estos perifericos y su respectiva implementacíon.
+En esta sección se describen los periféricos usados para la elaboración del robot cartógrafo, sus espacios en memoria, el desarrollo tanto en software como en hardware y código asociado a cada uno de estos. Adicionalmente, se pueden encontrar los datasheets de estos componentes para mayor detalle en la carpeta Datasheets.
 
 ## [ Firmware ](https://github.com/unal-edigital2/w07_entrega-_final-grupo11/tree/main/firmware)
 
