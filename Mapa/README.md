@@ -189,7 +189,7 @@ Para las ruedas se utilizó un puente H (modelo L298N) conectado a los motores e
 
 El mapa de memoria para las ruedas es el que se muestra a continuación
 
-![Screenshot](/images/ruedas.jpg)
+![Screenshot](/images/ruedas.JPG)
 
 Se toma en cuenta un único registro ubicado en el espacio de memoria 0x820058, este registro se refiere al estado que define cuál será el movimiento de las ruedas, así como se describe más adelante.
 
@@ -279,7 +279,7 @@ Este dispositivo se basa en un fotodiodo emisor de luz y un fototransistor. Su f
 
 El modulo del infrarojo esta compuesto por una serie de registros que se encuentran en el espacio de memoria 0x82002000. A continuación se explica como es su implementación en hardware:
 
-![Screenshot](/images/MM_IR.JPG)
+![Screenshot](/images/infrarojo.JPG)
 
 El módulo en verilog para el seguidor de linea es de la siguiente forma:
 
