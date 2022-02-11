@@ -1,8 +1,7 @@
 
-1. Camara
+1. [ Cámara. ](#camara)
 2. [ Ultrasonido ](#us)
-3. [ Cámara. ](#camara)
-4. [ Movimiento. ](#movimiento)
+3. [ Movimiento. ](#movimiento)
 
 ## Camara
 Para realizar la implementacion de camara en software, la cual se encarga del reconocimiento de color y forma, no fue necesario usar un codigo muy complejo en C, debido a que el procesamiento de los datos se realizo por hardware.El codigo consiste de dos partes principales, una se encarga de obtener los datos y la otra de mostrarlo a traves de leds. La primera parte es la siguiente:
