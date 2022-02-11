@@ -311,7 +311,9 @@ Conozcamos primero la cámara modelo OV7970 sin FIFO:
 
 -Cuenta con protocolo I2C
 
-![Screenshot](/images/OV7670.png)
+<p align="center">
+  <img width="220" height="205" src=/images/OV7670.png>
+</p>
 
 
 La limitación de memoria de la tarjeta de desarrollo hace que optemos por usar el formato 640x480 con RGB444, de esta manera cada píxel requerirá 12 bits para un total de 450kB para la representación de la imagen.
@@ -320,11 +322,16 @@ En primer lugar, veamos cómo obtenemos la información de la cámara:
 
 Cuando tenemos la salida en formato RGB444 la cámara usa un primer ciclo de PCLK para enviar un byte de información, donde la primer mitad son los bits correspondientes a Red y la otra mitad no tiene relevancia, en el siguiente ciclo de PCLK la cámara envía un segundo byte donde la primer mitad son los bits correspondientes a Green, y la otra mitad a Blue, teniendo así la información de un pixel en 2 ciclos de PCLK; este proceso se repite sucesivamente durante 1280 ciclos de reloj, el equivalente a 640 pixeles. Durante este periodo la señal HREF es un 1 lógico, indicando que se está en toma de información de una hilera de pixeles.
 
-![Screen](/images/RGB444.png)
+
+<p align="center">
+  <img width="720" height="405" src=/images/RGB444.png>
+</p>
 
 Ahora se repite este proceso 480 veces con un delay de 288 ciclos de PCLK de por medio en el cual los valores tomados son inválidos, estos ciclos se dividen un margen margen anterior de 38 ciclos de reloj, luego 160 ciclos donde HSYNC toma valor de 0 y por último 90 de margen posterior como lo sugiere el datasheet. Una vez obtenidas las 480 líneas se toman 10 valores más de hileras pero con datos inválidos luego de lo cual y durante el tiempo que tomaría sacar 3 hileras más de valores VSYNC toma valor de 1 lógico. De este modo HSYNC sincroniza horizontalmente la imagen en el monitor (cada hilera de pixeles), y VSYNC sincroniza la representación de frames (paquetes de 480 hileras).
 
-![Screen](/images/VGATiming.png)
+<p align="center">
+  <img width="720" height="405" src=/images/VGATiming.png>
+</p>
 
 Para información más detallada consultar el datasheet
 
@@ -332,11 +339,16 @@ Para información más detallada consultar el datasheet
 ### Identificacion de forma
 Para identificar que hay un objeto uniforme en la cámara se evalúa la matriz de datos de pixeles, se hace agrupaciones horizontales de 3 pixeles: si estos son idénticos, es decir, tienen el mismo color, la agrupación es válida, si 3 pixeles adyacentes no tienen el mismo color es una agrupación inválida. Las agrupaciones se van sumando en secuencia en la fila, una vez la fila ha terminado obtenemos el número de tríos de pixeles válidos, valor que llamaremos Ancho. Iterando en cada hilera de pixeles podemos guardar el valor máximo de tríos que haya tenido alguna hilera, lo que podemos llamar como Ancho Medio; además podemos saber si el ancho ha incrementado de una fila a otra y llevar un valor representativo de este cambio a lo largo de todas las filas que llamaremos Ancho Incremental, el cual se hace más grande si el ancho actual es mayor al ancho anterior y decrece si es lo contrario.
 
-![Screen](/images/ejmterna.png)
+<p align="center">
+  <img width="720" height="405" src=/images/ejmterna.png>
+</p>
+
 
 Así, el triángulo se diferencia de las demás figuras en que el ancho incremental es mayor que 100; el cuadrado se diferencia del círculo en que su Ancho Medio es semejante a su Ancho Incremental, mientras que el del círculo su Ancho Medio es más grande que su Ancho incremental, en otras palabras, el cuadrado a diferencia del círculo varía muy poco su ancho.
 
-![Screen](/images/formas.png)
+<p align="center">
+  <img width="720" height="405" src=/images/formas.png>
+</p>
 
 ### Identificación de color
 
