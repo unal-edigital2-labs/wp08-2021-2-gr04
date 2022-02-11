@@ -15,7 +15,12 @@ El trabajo mostrado en este repositorio presenta el proyecto final de la asignat
 
 El proyecto consiste en desarrollar un robot capaz de navegar y trazar un laberinto al mismo tiempo que procesa imágenes por color y forma. Para esto se usa una tarjeta de desarrollo Nexys 4 (FPGA) sobre el cual se integra un SoC basado en arquitectura RISC-V de 32 bits.
 
-Se presenta documentación detallada de hardware y firmware, cada módulo descrito integrando así también el mapa de memoria; todo esto compone una descripción completa sobre el proyecto y se espera que pueda ser de utilidad para futuros trabajos
+Se presenta documentación detallada de hardware y firmware, cada módulo descrito integrando así también el mapa de memoria; todo esto compone una descripción completa sobre el proyecto y se espera que pueda ser de utilidad para futuros trabajos.
+
+<p align="center">
+  <img width="720" height="405" src=/images/escenario.png>
+</p>
+
 ## SoC
 
 ![Screenshot](/images/SoCmem.png)
