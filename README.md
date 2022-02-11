@@ -23,7 +23,7 @@ Se presenta documentación detallada de hardware y firmware, cada módulo descri
 
 ## SoC
 
-![Screenshot](/images/SoCmem.png)
+![Screenshot](/images/SoCmem.jpg)
 
 ## [ Mapa de Memoria y Periféricos](https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/tree/main/Mapa)
 
