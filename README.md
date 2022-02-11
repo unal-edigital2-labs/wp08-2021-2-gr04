@@ -29,7 +29,7 @@ Se presenta documentación detallada de hardware y firmware, cada módulo descri
 
 En esta sección se describen los periféricos usados para la elaboración del robot cartógrafo, sus espacios en memoria, el desarrollo tanto en software como en hardware y código asociado a cada uno de estos. Adicionalmente, se pueden encontrar los datasheets de estos componentes para mayor detalle y enlaces de interés en la carpeta Datasheets y Links.
 
-## [ Firmware ](https://github.com/unal-edigital2/w07_entrega-_final-grupo11/tree/main/firmware)
+## [ Firmware ](https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/tree/main/Firmware)
 
 En esta seccion se incluyen los archivos usados para realizar la respectiva integracion de los archivos de hardware a el SOC. Ademas, tambien se incluyen el main.c, la cual se encarga de controlar el robot cartografo desde software, y la respectiva explicacion de funcionamiento para cada una de las funciones usadas.
 
