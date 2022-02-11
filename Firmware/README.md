@@ -1,33 +1,8 @@
-1. [ MP3. ](#mp3)
-2. [ Ultrasonido ](#us)
-3. [ Cámara. ](#camara)
-4. [ Movimiento. ](#movimiento)
 
-<a name="mp3"></a>
-### MP3
+1. [ Ultrasonido ](#us)
+2. [ Cámara. ](#camara)
+3. [ Movimiento. ](#movimiento)
 
-Para el mp3, lo que se planteó fue la ejecución de ciertos sonidos dependiendo de la dirección que tome nuestro robot cartógrafo. Para hacerlo, se realiza una función la cual debe incluir una cadena de datos específica, tomándola directamente del [documento](../datasheets/DFR0299-DFPlayer-Mini-Manual.pdf) del fabricante.
-
-``` c
-static void mp3(int track){
-	// 1=Derecha
-	// 2=Izquierda
-	// 3=Recto
-	// 4=Vuelta
-
-	uart2_rxtx_write(0x7E); //Inicio cadena
-	uart2_rxtx_write(0xFF); //Versión
-	uart2_rxtx_write(0x06); //Longitud bytes
-	uart2_rxtx_write(0x03); //Comando
-	uart2_rxtx_write(0x00); //Feedback
-	uart2_rxtx_write(0x00); //Parámetro 1
-	uart2_rxtx_write(track); //Parámetro 2 (variable)
-	uart2_rxtx_write(0xEF); //Fin de cadena
-}
-
-```
-
-<a name="us"></a>
 ## Ultrasonido
 
 Para la implementación del ultrasonido en C, se realizan 2 funciones, una para realizar una medición individual del ultrasonido y otra que implementa al servomotor y realiza tres mediciones, una en cada dirección. Para la primera:
