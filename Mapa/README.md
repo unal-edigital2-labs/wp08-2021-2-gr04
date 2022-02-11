@@ -189,7 +189,7 @@ Para las ruedas se utilizó un puente H (modelo L298N) conectado a los motores e
 
 El mapa de memoria para las ruedas es el que se muestra a continuación
 
-![Screenshot](/images/WheelsMem.png)
+![Screenshot](/images/ruedas.jpg)
 
 Se toma en cuenta un único registro ubicado en el espacio de memoria 0x820058, este registro se refiere al estado que define cuál será el movimiento de las ruedas, así como se describe más adelante.
 
