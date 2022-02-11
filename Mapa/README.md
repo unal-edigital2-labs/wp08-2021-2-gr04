@@ -320,7 +320,10 @@ En primer lugar, veamos cómo obtenemos la información de la cámara:
 
 Cuando tenemos la salida en formato RGB444 la cámara usa un primer ciclo de PCLK para enviar un byte de información, donde la primer mitad son los bits correspondientes a Red y la otra mitad no tiene relevancia, en el siguiente ciclo de PCLK la cámara envía un segundo byte donde la primer mitad son los bits correspondientes a Green, y la otra mitad a Blue, teniendo así la información de un pixel en 2 ciclos de PCLK; este proceso se repite sucesivamente durante 1280 ciclos de reloj, el equivalente a 640 pixeles. Durante este periodo la señal HREF es un 1 lógico, indicando que se está en toma de información de una hilera de pixeles.
 
-![Screenshot](/images/RGB444.jpg)
+![Screen](/images/RGB444.png)
+
+Ahora se repite este proceso 480 veces con un delay de 288 ciclos de PCLK de por medio en el cual los valores tomados son inválidos, estos ciclos se dividen un margen margen anterior de 38 ciclos de reloj, luego 160 ciclos donde HSYNC toma valor de 0 y por último 90 de margen posterior como lo sugiere el datasheet. Una vez obtenidas las 480 líneas se toman 10 valores más de hileras pero con datos inválidos luego de lo cual y durante el tiempo que tomaría sacar 3 hileras más de valores VSYNC toma valor de 1 lógico. De este modo HSYNC sincroniza horizontalmente la imagen en el monitor (cada hilera de pixeles), y VSYNC sincroniza la representación de frames (paquetes de 480 hileras).
+
 
 ### test_cam
 
