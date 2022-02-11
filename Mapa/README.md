@@ -333,7 +333,7 @@ Conozcamos primero la cámara modelo OV7970 sin FIFO:
 </p>
 
 
-La limitación de memoria de la tarjeta de desarrollo hace que optemos por usar el formato 640x480 con RGB444, de esta manera cada píxel requerirá 12 bits para un total de 450kB para la representación de la imagen.
+La limitación de memoria de la tarjeta de desarrollo hace que optemos por usar el formato 640x480 con RGB444, de esta manera cada píxel requerirá 12 bits para un total de 450kB para la representación de la imagen. Decidimos hacer el procesamiento de imagen por Hardware.
 
 En primer lugar, veamos cómo obtenemos la información de la cámara:
 
