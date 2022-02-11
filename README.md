@@ -47,7 +47,7 @@ Desarrollar firmware en C manualmente puede no ser muy bueno si no se tienen bue
 
 ## Pruebas funcionales
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=XLlC-236xpk
+<a href="https://drive.google.com/drive/folders/1563LrBHRkpSxvA45RVO6zU9HjImpouOw?usp=sharing
 " target="_blank"><img src="http://img.youtube.com/vi/XLlC-236xpk/0.jpg" 
 alt="(http://img.youtube.com/vi/XLlC-236xpk/0.jpg)" width="400"/></a>
 
