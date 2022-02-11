@@ -435,7 +435,7 @@ for (int i=0;i<=(maxy-miny);i++){
   
 }
 ```
-Un ejemplo de salida, si el carro fuera al frente 3 veces, una vez a la izquierda, una a la derecha y 2 veces al frente:
+Un ejemplo de salida, si el carro avanzara 3 veces, una vez a la izquierda, una a la derecha y 2 avanza:
 
 
 <p align="center">
