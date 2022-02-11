@@ -48,6 +48,7 @@ static void led_test(void)
 	
 }
 ``` 
+<a name="camara"></a>
 ## Radar
 
 Para la implementación del radar en C, se realizan 2 funciones.Por una parte, una para el ultrasonido que unicamente  realizara una medición de distancia. Por otra parte, la segunda funcion hace uso de la funcion de ultrasonido mencionada anteriormente y con la ayuda del servomotor se realizan tres mediciones, una para cada dirección. Para la primera:
@@ -136,31 +137,7 @@ static int * US(void){
 }
 ```
 
-<a name="camara"></a>
-## Cámara
 
-Para la implementación de la cámara en C fue necesario reducir el tamaño de la imagen por 100 * 75 ya que al utilizar 160 * 120 no es posible cargar el menú del Soc, se crea una función para que muestre por la VGA la imagen del tamaño especificado.
-
-``` c
-
-static void camara_test(void)
-{
-	 for(int y=0;y<480;y++){
-	 	for(int x=0;x<640;x++){
-	 		vga_cntrl_mem_we_write(0);
-	 		vga_cntrl_mem_adr_write(y*640+x);
-	 		if(x<100 && y<75){
-	 			camara_cntrl_DP_RAM_addr_out_write(75*y+x);
-	 			vga_cntrl_mem_data_w_write(camara_cntrl_data_mem_read());
-	 		}else
-	 			vga_cntrl_mem_data_w_write(0);
-	 		vga_cntrl_mem_we_write(1);
-	 	}	
-	 }
-}
-
-
-``` 
 
 <a name="movimiento"></a>
 ## Movimiento
