@@ -974,3 +974,9 @@ class Camara(Module,AutoCSR):
             o_CAM_href= self.CAM_href,
             i_DP_RAM_addr_out= self.DP_RAM_addr_out.storage)
 ```
+
+Tenemos entonces el mapa de memoria detallado para el módulo general VGA_MAPA
+
+<p align="center">
+  <img width="520" height="305" src=/images/mpdcamara.PNG>
+</p>
