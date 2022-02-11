@@ -19,7 +19,7 @@ Cada módulo se encuentra explicado en la documentación dentro de la carpeta mo
 
 ![Screenshot](/images/SoCmem.png)
 
-## [ Mapa de Memoria ](https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/tree/main/Mapa)
+## [ Mapa de Memoria y Periféricos](https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/tree/main/Mapa)
 
 En la presente sección se encuentran los diferentes perífericos que se usaron para la elaboración del robot cartógrafo, asi como también los respectivos espacios en memoria que fueron utilizados. Asi mismo, se incluye el hardware desarrollado para cada uno de estos perifericos y su respectiva implementacíon.
 
