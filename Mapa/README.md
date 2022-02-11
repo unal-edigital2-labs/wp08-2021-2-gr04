@@ -303,9 +303,21 @@ Luego se añade el submodulo y se importan los pines.
 
 <a name="Camara"></a>
 # Cámara
-La cámara utilizada fue la OV7670, esta cámara no tiene FIFO y fue necesario hacer uso de un arduino en modo maestro para para realizar la solicitud de los registros por medio de comunicación I2C esto se describe en el [documento](../datasheets/OV7670.pdf) del dispositivo con todos sus pines de entrada y salida, por motivo de la dificultad del modulo la descripción de hardware en su mayoría fue entregada en el paquete de trabajo 02 asignado por el profesor de la asignatura. Dicha descripción cuenta con los módulos buffer_ram_dp, VGA_driver, cam_read y test_cam siendo necesaria la modificación de los dos últimos para el funcionamiento de la cámara, adicionalmente se utiliza un modulo divisor de frecuencia de 24MHz para que pueda operar la cámara y 25MHz para la VGA.
+Conozcamos primero la cámara modelo OV7970 sin FIFO:
+
+-Puede llegar a una resolución máxima de 640x480, este tamaño es ajustable
+
+-Cuenta, entre otros, con RGB565/555/444 como formato de salida
+
+-Cuenta con protocolo I2C
 
 ![Screenshot](/images/OV7670.png)
+
+La limitación de memoria de la tarjeta de desarrollo hace que optemos por usar el formato 640x480 con RGB444, de esta manera cada píxel requerirá 12 bits para un total de 450kB para la representación de la imagen.
+
+En primer lugar, veamos cómo obtenemos la información de la cámara:
+
+Cuando tenemos la salida en formato RGB444 la cámara usa un primer ciclo de PCLK para enviar un byte de información, donde la primer mitad son los bits correspondientes a Red y la otra mitad no tiene relevancia, en el siguiente ciclo de PCLK la cámara envía un segundo byte donde la primer mitad son los bits correspondientes a Green, y la otra mitad a Blue, teniendo así la información de un pixel en 2 ciclos de PCLK; este proceso se repite sucesivamente durante 1280 ciclos de reloj, el equivalente a 640 pixeles. Durante este periodo la señal HREF es un 1 lógico, indicando que se está en toma de información de una hilera de pixeles.
 
 
 ### test_cam
