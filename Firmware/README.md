@@ -1,8 +1,53 @@
 
-1. [ Ultrasonido ](#us)
-2. [ Cámara. ](#camara)
-3. [ Movimiento. ](#movimiento)
+1. Camara
+2. [ Ultrasonido ](#us)
+3. [ Cámara. ](#camara)
+4. [ Movimiento. ](#movimiento)
 
+## Camara
+Para realizar la implementacion de camara en software, la cual se encarga del reconocimiento de color y forma, no fue necesario usar un codigo muy complejo en C, debido a que el procesamiento de los datos se realizo por hardware.El codigo consiste de dos partes principales, una se encarga de obtener los datos y la otra de mostrarlo a traves de leds. La primera parte es la siguiente:
+
+``` c
+static int recibirForma(void)
+{
+
+		unsigned int Forma = 0;
+
+		Forma = VGA_Mapa_Forma_read();
+
+		return Forma;	
+		
+}
+
+static int recibirColor(void)
+{
+
+		unsigned int Color = 0;
+
+		Color = VGA_Mapa_PromedioColor_read();
+
+		return Color;	
+		
+}
+``` 
+
+La siguiente funcion, hace uso de las dos funciones anteriores y muestra cual es la forma asi como el color que capta la camara. 
+
+``` c
+static void led_test(void)
+{
+	unsigned int form = 0;
+	unsigned int col = 0;
+	printf("Test del los leds... se interrumpe con el botton 1\n");
+	while(!(buttons_in_read()&1)) {
+
+		form = recibirForma();
+		col = recibirColor()*8;
+		leds_out_write(form+col);
+	}
+	
+}
+``` 
 ## Radar
 
 Para la implementación del radar en C, se realizan 2 funciones.Por una parte, una para el ultrasonido que unicamente  realizara una medición de distancia. Por otra parte, la segunda funcion hace uso de la funcion de ultrasonido mencionada anteriormente y con la ayuda del servomotor se realizan tres mediciones, una para cada dirección. Para la primera:
