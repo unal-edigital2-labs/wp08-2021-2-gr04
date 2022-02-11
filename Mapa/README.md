@@ -1,6 +1,8 @@
 # Mapa de Memoria y Periféricos
 ## Mapa de memoria:
 
+Se muestra la distribución general de la memoria por periféricos y sus respectivas direcciones:
+
 <p align="center">
   <img width="250" height="400" src=/images/Memorymap.PNG>
 </p>
