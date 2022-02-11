@@ -3,27 +3,35 @@
 2. [ Cámara. ](#camara)
 3. [ Movimiento. ](#movimiento)
 
-## Ultrasonido
+## Radar
 
-Para la implementación del ultrasonido en C, se realizan 2 funciones, una para realizar una medición individual del ultrasonido y otra que implementa al servomotor y realiza tres mediciones, una en cada dirección. Para la primera:
+Para la implementación del radar en C, se realizan 2 funciones.Por una parte, una para el ultrasonido que unicamente  realizara una medición de distancia. Por otra parte, la segunda funcion hace uso de la funcion de ultrasonido mencionada anteriormente y con la ayuda del servomotor se realizan tres mediciones, una para cada dirección. Para la primera:
 
 
 ``` c
 static int ultraSound_test(void)
 {
-	ultraSound_cntrl_init_write(1);
-	// Se esperan 2 ms para dar tiempo a que el registro done se actualice
-	delay_ms(2);
-	while(true){
-		if(ultraSound_cntrl_done_read() == 1){
-			// Si done es 1, se lee y se retorna la distancia
-			int d = ultraSound_cntrl_distance_read();
-			ultraSound_cntrl_init_write(0);
-			return d;
-		} 
-	}	
+	unsigned int d = 0;	
+	bool done = false;
+        while(!(buttons_in_read()&1)){
+		ultrasonido_init_write(1);
+		delay_ms(2);
+		while(!done){
+			delay_ms(2);
+			done = ultrasonido_done_read();
+			delay_ms(2);
+			if(done == 1){
+				d=ultrasonido_dist_read();
+				printf("La distancia es %x \n",d);
+			}
+		}
+		
+		//ultrasonido_init_write(0);
+		}
+		return d;
+	
+	
 }
-
 ```
 
 Para la implementación con el servomotor:
