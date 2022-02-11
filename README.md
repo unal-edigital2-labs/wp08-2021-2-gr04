@@ -21,7 +21,9 @@ Se presenta documentación detallada de hardware y firmware, cada módulo descri
   <img width="720" height="405" src=/images/escenario.png>
 </p>
 
-## SoC
+## SoC Robot Cartógrafo
+
+Se basó en un procesador RISC-V conectado mediante un bus de comunicación Wishbone a los módulos cargados en Verilog; Litex incorpora esto al System on Chip que a su vez mantiene conexión con los diferentes periféricos que conforman el proyecto en físico
 
 ![Screenshot](/images/SoCmem.jpg)
 
