@@ -313,23 +313,132 @@ if(d[0] >= 35){
 }
 ```
 
-La variable orientation define en que dirección se esta moviendo el carro, de esta manera se puede establecer cual valor de la matriz se coloca en 1, dado que solo hay 4 direcciones, cuando realiza un giro completo se reinicia la dirección:
+	
+Para trazar el mapa se tomarán los movimientos del robot como vectores en forma polar, cada vez que el robot se desplace lo hará con magnitud 1 (se movió una posición) en un ángulo dado por el módulo radar (izquierda 90°, derecha -90° y al frente 0°). Este vector de desplazamiento se registrará en una matriz llamada ángulos cuando el vehículo cambie su estado de movimiento, particularmente cuando deja el estado de reposo (quieto); Esta matriz ángulos es de dimensión 20x2, lo que significa que es capaz de almacenar un total de 20 movimientos, la primera columna será la magnitud del desplazamiento (1 si se desplaza, 0 si no lo hace) y la segunda el ángulo en que se desplaza. Existe un parámetro llamado fin que indica si el robot terminó su navegación, en caso de que lo haga y no haya completado los 20 movimientos el excedente se llenará con 0 en magnitud y 0 en ángulo.
+
+Una vez completada la matriz ángulos se procede a convertir estos vectores polares en coordenadas cartesianas que indiquen el recorrido del robot, estas coordenadas se guardan en la matriz coor como pares (x,y), donde el inicio de la navegación es la referencia (0,0).
+
+Se analiza la matriz coor para generar un mapa rectangular donde el carácter ‘o’ indica dónde pasó el robot y el carácter ‘x’ indica dónde no. El mapa se ordena tomando el eje de las abscisas como el eje al cual el robot se encuentra en disposición, por esto, se sugiere comenzar la navegación del robot de manera horizontal paralela al plano de la pantalla donde se visualizará el mapa. El mapa se trazará una vez dada la señal de finalizar la navegación o completados 20 movimientos.
+
+Se presenta el código del trazado de mapa a continuación:
 
 ``` c
-if(orientation >= 4)
-	orientation = orientation - 4; 
-else if(orientation < 0) 
-	orientation = orientation + 4;
+#include <iostream>
+#include <math.h>
+#define _USE_MATH_DEFINES
+using namespace std;
+int main() {
+    int ang = 0;
+    int angulos [20][2]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
+    int coor[20][2]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
+    int dir;
+    int take = 1;
+    int inde = 0;
+    int fin = 0;
+    int angu = 0;
+    int diro = 5;
+    while (inde!=19){
+      while(fin!=1){
+        cout<<"Ingrese direccion: ";
+        cin>>dir;
+        if(dir != diro){
+          diro = dir;
+          //Derecha
+          if(dir == 1){
+            ang = -90;
+            angulos[inde+1][1]=ang;
+            angulos[inde+1][0]=1;
+          }
+          //Izquierda
+          if(dir == 2){
+            ang = 90;
+            angulos[inde+1][1]=ang;
+            angulos[inde+1][0]=1;
+          }
+          //Avanza
+          if(dir==0){
+            ang = 0;
+            angulos[inde+1][1]=ang;
+            angulos[inde+1][0]=1;
+          }
+          cout<<"Termino?";
+          cin>>fin;
+          inde++;
+          }
+        cout<<"Termino?";
+        cin>>fin;
+        }
+      if(fin==1){
+      angulos[inde+1][1]=ang;
+      angulos[inde+1][0]=0;
+      inde++;
+        }
+        }
+
+  
+  int minx = 0;
+  int maxx = 0;
+  int miny = 0;
+  int maxy = 0;
+  
+  
+  for (int i = 1; i <= 19; i++){
+      angu = angu + angulos[i][1];
+      coor[i][0] = coor[i-1][0] + angulos[i][0]*cos(angu* M_PI / 180);
+      coor[i][1] = coor[i-1][1] + angulos[i][0]*sin(angu* M_PI / 180);
+    cout<<coor[i][0]<<coor[i][1]<<'\n';
+
+    if(coor[i][0]>maxx){
+      maxx=coor[i][0];
+    }
+    if(coor[i][0]<minx){
+      minx=coor[i][0];
+    }
+    if(coor[i][1]>maxy){
+      maxy=coor[i][1];
+    }
+    if(coor[i][1]<miny){
+      miny=coor[i][1];
+    }
+  }
+  cout<<'\n';
+  char mapa[maxy-miny][maxx-minx];
+  for(int l = 0;l <= (maxy-miny);l++){
+    for(int j = 0; j<=(maxx-minx);j++){
+      mapa[l][j] = 'x';
+    }
+  }
+ char mapafinal[maxy-miny][maxx-minx];
+for (int i=0;i<=(maxy-miny);i++){
+    for(int j=0;j<=(maxx-minx);j++){
+      cout<<mapa[i][j];
+    }
+    cout<<'\n';
+  }
+   cout<<'\n';
+  for (int i=0;i<=19;i++){
+      mapa[coor[i][1]-miny][coor[i][0]-minx] = 'o';
+  }
+for (int i=0;i<=(maxy-miny);i++){
+    for(int j=0;j<=(maxx-minx);j++){
+      mapafinal[i][j] = mapa[(maxy-miny)-i][j];
+    }
+  }
+  
+  for (int i=0;i<=(maxy-miny);i++){
+    for(int j=0;j<=(maxx-minx);j++){
+      cout<<mapafinal[i][j];
+    }
+    cout<<'\n';
+  }
+    return 0;
+  
+}
 ```
-
-Finalmente se actualizan los datos de la matriz para ser enviada por bluetooth. Ejemplo de los datos que se envían:
-
+Un ejemplo de salida, si el carro fuera al frente 2 veces, una vez a la izquierda, una a la derecha y 2 veces al frente:
 
 
 
-Cuando se reciben los datos, se pueden mostrar de forma visual por medio de algún programa que interprete los strings que se obtienen por bluetooth, en este caso, se uso el lenguaje de programación Processing, de forma que el laberinto se ve de la siguiente manera:
 
-
-![Alt text](/images/labP.png)
 
 
