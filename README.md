@@ -47,7 +47,7 @@ Desarrollar firmware en C manualmente puede no ser muy bueno si no se tienen bue
 
 ## Pruebas funcionales
 
-<a href="https://drive.google.com/drive/folders/1563LrBHRkpSxvA45RVO6zU9HjImpouOw?usp=sharing
-" target="_blank"><img src="http://img.youtube.com/vi/XLlC-236xpk/0.jpg" 
-alt="(http://img.youtube.com/vi/XLlC-236xpk/0.jpg)" width="400"/></a>
+<a href="https://drive.google.com/drive/folders/142QnFIS4SVECmSSa9qxbLlYzCy9eO4Y_?usp=sharing
+" target="_blank"><img src="https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1Carro.jpeg" 
+alt="(https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1Carro.jpeg)" width="400"/></a>
 
