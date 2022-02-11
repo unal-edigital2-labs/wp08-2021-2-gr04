@@ -1,9 +1,17 @@
+# Mapa de Memoria y Periféricos
+
+En esta sección se describen los periféricos usados para la elaboración del robot cartógrafo, sus espacios en memoria, el desarrollo tanto en software como en hardware y código asociado a cada uno de estos. A continuación puede dirigirse al módulo que prefiera para dar la documentación ligada:
+
+
 1. [ Radar. ](#radar)
 2. [ Ruedas. ](#ruedas)
 3. [ InfraRojo. ](#InfraRojo)
-5. [ Cámara. ](#Camara)
+4. [ Cámara. ](#Camara)
 
 <a name="radar"></a>
+
+
+
 # Radar
 El modulo del radar esta compuesto por el ultrasonido y un servomotor, cada registro se encuentra en el espacio de memoria 0x82001800 y 0x82001000 respectivamente. A continuación se explica como es su implementación en hardware:
 
