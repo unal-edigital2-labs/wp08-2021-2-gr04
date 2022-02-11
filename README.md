@@ -11,10 +11,11 @@
 
 ## Introducción
 
-El repositorio mostrado a continuacion contiene la entrega final del proyecto de la materia Electrónica Digital II dictada en la Universidad Nacional de Colombia. La propuesta del proyecto consiste en un robot cartográfico que recorre un laberinto siendo capaz de identificar el color y la forma figuras que se hayan en el laberinto. Ademas, el robot realiza un mapeo la distribución del laberinto mientras lo recorre. Se utilizan los lenguajes de programación: Verilog, Python y C. 
+El trabajo mostrado en este repositorio presenta el proyecto final de la asignatura Electrónica Digital 2 dictada en la Universidad Nacional de Colombia.
 
-Cada módulo se encuentra explicado en la documentación dentro de la carpeta module, mientras que en este documento se explicará la integración y el funcionamiento conjunto de los periféricos.
+El proyecto consiste en desarrollar un robot capaz de navegar y trazar un laberinto al mismo tiempo que procesa imágenes por color y forma. Para esto se usa una tarjeta de desarrollo Nexys 4 (FPGA) sobre el cual se integra un SoC basado en arquitectura RISC-V de 32 bits.
 
+Se presenta documentación detallada de hardware y firmware, cada módulo descrito integrando así también el mapa de memoria; todo esto integra una descripción completa sobre el proyecto y se espera que pueda ser de utilidad para futuros trabajos
 ## SoC
 
 ![Screenshot](/images/SoCmem.png)
