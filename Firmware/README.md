@@ -63,18 +63,18 @@ static int infrarrojo(void){
 	unsigned int salida=3;
 
 ``` 
-En la segunda parte, primero deifimos un if con todos los posible valores que puede tomar entrada, los cuales van de 0 a 31 en decimales, en caso de que entrada no este entre estos valores, se considerara que ocurrio un error y la variable salida mantendra su valor 3, que significa no hacer movimiento.
+En la segunda parte, primero deifimos un if con todos los posible valores que puede tomar entrada cuando el infrorojo de la mitad detecta negro.
 ``` c
 	if((entrada == 0x4)||(entrada == 0x5)||(entrada == 0x6)||(entrada == 0x7)||(entrada == 0xC)||(entrada == 0xD)||(entrada == 0xE)||(entrada == 0xF)||(entrada == 0x14)||(entrada == 0x15)||(entrada == 0x16)||(entrada == 0x17)||(entrada == 0x1C)||(entrada == 0x1D)||(entrada == 0x1E)||(entrada == 0x1F)){
 ``` 
-Para realizar un giro hacia la izquierda, se consideran 3 posibles valores para entrada 00111,01111,10111. Los cuales nos quieren decir que al menos uno los infrarojos localizados en la izquierda ha detectado un movimiento.
+Para realizar un giro hacia la derecha, se consideran 3 posibles valores para entrada 00111,01111,10111. Los cuales nos quieren decir que al menos uno los infrarojos localizados en la derecha ha detectado un movimiento.
 
 ``` c
 		if ((entrada == 0x7)||(entrada == 0xF)||(entrada == 0x17))
 
 		{
 			salida = 2;
-			printf("Gire a la izquierda: %x \n",entrada);
+			printf("Gire a la derecha: %x \n",entrada);
 		}
 		
 ```
@@ -85,7 +85,7 @@ Para realizar un giro hacia la derecha, se consideran 3 posibles valores para en
 		else if ((entrada == 0x1C)||(entrada == 0x1D)||(entrada == 0x1E))
 		{
 			salida = 1;
-			printf("Gire a la derecha: %x \n",entrada);
+			printf("Gire a la izquierda: %x \n",entrada);
 		}
 ```
 Para el caso de parada, se considera solo un valor para entrada 11111. Asi tambien para cualquier otro caso que no se de los mencionados para parada o girar, se avanzara.
@@ -102,13 +102,19 @@ Para el caso de parada, se considera solo un valor para entrada 11111. Asi tambi
 			printf("Siga: %x \n",entrada);
 		}
 		
+			
 	}
-	else
+	else if (entrada == 0x00)
 	{
 		salida = 3;
-			printf("Está quieto: %x \n",entrada);
+		printf("Intersección: %x \n",entrada);
 	}
 	
+	else
+	{
+		salida = 0;
+			printf("Está quieto: %x \n",entrada);
+	}
 	
 	
 	return salida;
@@ -209,235 +215,6 @@ static int * US(void){
 
 <a name="movimiento"></a>
 ## Movimiento
-
-El movimiento en el robot incluye las ruedas, los infrarrojos, el ultrasonido y el mp3. La sección de dirección en el main.c describe el funcionamiento en conjunto de estos periféricos. 
-
-Para comenzar el código le indica a las ruedas que avancen hacia adelante, se inicializan variables como rotate y orientation, y se inicializa la matriz del mapa del laberinto.
-
-``` c
-
-static void direction(void){
-	wheels_cntrl_state_write(0);
-	int orientation = 0;
-	int posV = 0;
-    	int posH = 0;
-	int map[10][10];
-
-	//Inicialización de la matriz del laberinto
-	for(int i=0;i<10;i++){
-        for(int k=0;k<10;k++){  
-            map[i][k] = 0;
-        }    
-    }
-
-```
-Luego, se tienen las variables que leen los registros del infrarrojo para procesar qué es lo que "observa" el robot; además se incluye una función para resetear las respectivas variables en las que se incluyen la rotación, la orientación y la posición.
-
-``` c
-char *tempMap = "A";
-while(true){
-	bool L = IR_cntrl_L_read();
-	bool LC = IR_cntrl_LC_read();
-	bool C = IR_cntrl_C_read();
-	bool RC = IR_cntrl_RC_read();
-	bool R = IR_cntrl_R_read();
-
-	if(buttons_in_read()&2){
-		orientation = 0;
-		posV = 1;
-		posH = 0;
-		for(int i=0;i<10;i++){
-			for(int k=0;k<10;k++){
-				map[i][k] = 0;
-				printf("%i",  map[i][k]);
-				sprintf(tempMap, "%d", map[i][k]);
-				bluetooth_write(tempMap);
-			}
-			printf("\n");
-			bluetooth_write("\n");
-		}
-		wheels_cntrl_state_write(0);
-	}		
-```
-
-En los estados de rotate se define el movimiento del robot basándose en la lectura de los registros de cada infrarrojo. Por ejemplo, basandose en los valores de L, LC, C, RC y R, dependiendo de cuáles de ellos estén activos, el robot realizará los movimientos definidos en el módulo de las ruedas.
-
-Considerando el siguiente extracto del código:
-
-``` c
-if(((L==0 && C==1 && R==0) || (L==1 && C==1 && R==1)) && L==0 && R==0){
-	wheels_cntrl_state_write(0);
-}else if((LC==1 && C==0) || (L==1 && C==0 && R==0) || (L==1 && C==1 && R==0) ){
-	wheels_cntrl_state_write(1);
-}else if((C==0 && RC==1) || (L==0 && C==0 && R==1) || (L==0 && C==1 && R==1)){
-	wheels_cntrl_state_write(2);
-}else if(L==1 && LC==1 && C==1 && RC==1 && R==1){
-	wheels_cntrl_state_write(3);
-```
-
-Cuando todos los infrarrojos se encuentren activos, el robot entiende que está en una intersección, esto hace que el robot se quede quieto y llame la función del ultrasonido, donde este mide hacia todas las direcciones y registra las distancias en cada una, tambien envía los datos por bluetooth y muestras las distancias en los displays de 7 segmentos. Esto se muestra en el siguiente extracto del código:
-
-``` c
-}else if(L==1 && LC==1 && C==1 && RC==1 && R==1){
-	wheels_cntrl_state_write(3);
-	int *d = US();
-	showD(d);
-```
-
-De donde se ejecuta la siguiente sección que se encarga de comparar las mediciones de los registros y decidir qué dirección debe tomar el robot. Cuando elije una dirección, la anuncia por la bocina del MP3:
-
-``` c
-//Rotación
-//d[0] derecha - d[1] centro - d[2] izquierda 
-if(d[0] >= 35){
-	mp3(1);
-	wheels_cntrl_state_write(2);
-	delay_ms(400);
-	orientation = orientation + 1;
-}else if(d[0] < 35 && d[1] >= 35){
-	wheels_cntrl_state_write(0);
-	delay_ms(200);
-	mp3(3);
-}else if(d[0] < 35 && d[1] < 35 && d[2] >= 35){
-	mp3(2);
-	wheels_cntrl_state_write(1);
-	delay_ms(400);
-	orientation = orientation - 1;
-}else{			
-	mp3(4);
-	wheels_cntrl_state_write(5);
-	delay_ms(200);
-	wheels_cntrl_state_write(4);
-	delay_ms(500);
-	orientation = orientation + 2;
-}
-```
-
-	
-Para trazar el mapa se tomarán los movimientos del robot como vectores en forma polar, cada vez que el robot se desplace lo hará con magnitud 1 (se movió una posición) en un ángulo dado por el módulo radar (izquierda 90°, derecha -90° y al frente 0°). Este vector de desplazamiento se registrará en una matriz llamada ángulos cuando el vehículo cambie su estado de movimiento, particularmente cuando deja el estado de reposo (quieto); Esta matriz ángulos es de dimensión 20x2, lo que significa que es capaz de almacenar un total de 20 movimientos, la primera columna será la magnitud del desplazamiento (1 si se desplaza, 0 si no lo hace) y la segunda el ángulo en que se desplaza. Existe un parámetro llamado fin que indica si el robot terminó su navegación, en caso de que lo haga y no haya completado los 20 movimientos el excedente se llenará con 0 en magnitud y 0 en ángulo.
-
-Una vez completada la matriz ángulos se procede a convertir estos vectores polares en coordenadas cartesianas que indiquen el recorrido del robot, estas coordenadas se guardan en la matriz coor como pares (x,y), donde el inicio de la navegación es la referencia (0,0).
-
-Se analiza la matriz coor para generar un mapa rectangular donde el carácter ‘o’ indica dónde pasó el robot y el carácter ‘x’ indica dónde no. El mapa se ordena tomando el eje de las abscisas como el eje al cual el robot se encuentra en disposición, por esto, se sugiere comenzar la navegación del robot de manera horizontal paralela al plano de la pantalla donde se visualizará el mapa. El mapa se trazará una vez dada la señal de finalizar la navegación o completados 20 movimientos.
-
-Se presenta el código del trazado de mapa a continuación:
-
-``` c
-#include <iostream>
-#include <math.h>
-#define _USE_MATH_DEFINES
-using namespace std;
-int main() {
-    int ang = 0;
-    int angulos [20][2]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
-    int coor[20][2]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
-    int dir;
-    int take = 1;
-    int inde = 0;
-    int fin = 0;
-    int angu = 0;
-    int diro = 5;
-    while (inde!=19){
-      while(fin!=1){
-        cout<<"Ingrese direccion: ";
-        cin>>dir;
-        if(dir != diro){
-          diro = dir;
-          //Derecha
-          if(dir == 1){
-            ang = -90;
-            angulos[inde+1][1]=ang;
-            angulos[inde+1][0]=1;
-          }
-          //Izquierda
-          if(dir == 2){
-            ang = 90;
-            angulos[inde+1][1]=ang;
-            angulos[inde+1][0]=1;
-          }
-          //Avanza
-          if(dir==0){
-            ang = 0;
-            angulos[inde+1][1]=ang;
-            angulos[inde+1][0]=1;
-          }
-          cout<<"Termino?";
-          cin>>fin;
-          inde++;
-          }
-        cout<<"Termino?";
-        cin>>fin;
-        }
-      if(fin==1){
-      angulos[inde+1][1]=ang;
-      angulos[inde+1][0]=0;
-      inde++;
-        }
-        }
-
-  
-  int minx = 0;
-  int maxx = 0;
-  int miny = 0;
-  int maxy = 0;
-  
-  
-  for (int i = 1; i <= 19; i++){
-      angu = angu + angulos[i][1];
-      coor[i][0] = coor[i-1][0] + angulos[i][0]*cos(angu* M_PI / 180);
-      coor[i][1] = coor[i-1][1] + angulos[i][0]*sin(angu* M_PI / 180);
-    cout<<coor[i][0]<<coor[i][1]<<'\n';
-
-    if(coor[i][0]>maxx){
-      maxx=coor[i][0];
-    }
-    if(coor[i][0]<minx){
-      minx=coor[i][0];
-    }
-    if(coor[i][1]>maxy){
-      maxy=coor[i][1];
-    }
-    if(coor[i][1]<miny){
-      miny=coor[i][1];
-    }
-  }
-  cout<<'\n';
-  char mapa[maxy-miny][maxx-minx];
-  for(int l = 0;l <= (maxy-miny);l++){
-    for(int j = 0; j<=(maxx-minx);j++){
-      mapa[l][j] = 'x';
-    }
-  }
- char mapafinal[maxy-miny][maxx-minx];
-for (int i=0;i<=(maxy-miny);i++){
-    for(int j=0;j<=(maxx-minx);j++){
-      cout<<mapa[i][j];
-    }
-    cout<<'\n';
-  }
-   cout<<'\n';
-  for (int i=0;i<=19;i++){
-      mapa[coor[i][1]-miny][coor[i][0]-minx] = 'o';
-  }
-for (int i=0;i<=(maxy-miny);i++){
-    for(int j=0;j<=(maxx-minx);j++){
-      mapafinal[i][j] = mapa[(maxy-miny)-i][j];
-    }
-  }
-  
-  for (int i=0;i<=(maxy-miny);i++){
-    for(int j=0;j<=(maxx-minx);j++){
-      cout<<mapafinal[i][j];
-    }
-    cout<<'\n';
-  }
-    return 0;
-  
-}
-```
-Un ejemplo de salida, si el carro avanzara 3 veces, una vez a la izquierda, una a la derecha y 2 avanza:
-
-
 <p align="center">
   <img width="150" height="75" src=/images/salidamapa.PNG>
 </p>
