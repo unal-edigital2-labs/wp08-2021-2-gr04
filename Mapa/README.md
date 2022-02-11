@@ -514,8 +514,8 @@ always @ (Xpixel, Ypixel) begin
 end
 
 
-endmodule```
-
+endmodule
+```
 
 ### OV767
 
