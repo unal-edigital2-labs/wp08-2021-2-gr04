@@ -1,6 +1,15 @@
 # Mapa de Memoria y Periféricos
+## Mapa de memoria:
+
+<p align="center">
+  <img width="250" height="400" src=/images/Memorymap.PNG>
+</p>
+
+## Periféricos
 
 En esta sección se describen los periféricos usados para la elaboración del robot cartógrafo, sus espacios en memoria, el desarrollo tanto en software como en hardware y código asociado a cada uno de estos. A continuación puede dirigirse al módulo que prefiera para dar con la documentación ligada:
+
+
 
 
 1. [ Radar. ](#radar)
