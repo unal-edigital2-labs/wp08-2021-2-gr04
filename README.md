@@ -47,7 +47,7 @@ En esta sección se describen los periféricos usados para la elaboración del r
 - Otro problema se presento al integrar el  driver del ultrasonido desarrollado en verilog al Soc. Pues los valores obtenidos a traves del soc es sofware, no concordaban con los valores obtenidos con el driver por si solo.
 
 ## Pruebas funcionales
--En este video es posible observar el funcionamiento del infrarojo, ruedas y la camara.
+-En este video es posible observar el funcionamiento del infrarrojo, ruedas y la camara.
 
 <a href="https://drive.google.com/drive/folders/142QnFIS4SVECmSSa9qxbLlYzCy9eO4Y_?usp=sharing
 " target="_blank"><img src="https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1Carro.jpeg" 
@@ -57,3 +57,9 @@ alt="(https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1
 <a href="https://drive.google.com/file/d/1e7nmWLr6yBetAY9SGtBAJGUuHZ1iqG_H/view?usp=sharing
 " target="_blank"><img src="https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/Ultrasonido.JPG" 
 alt="(https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/Ultrasonido.JPG)" width="400"/></a>
+
+- En el video a continuación se presenta una prueba de la cámara y motores:
+<a href="https://drive.google.com/file/d/1s1ATSUborSTColFX9ysljxoKd6m9SaRN/view?usp=sharing
+" target="_blank"><img src="" 
+alt="()" width="400"/></a>
+
