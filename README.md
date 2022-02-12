@@ -55,5 +55,5 @@ alt="(https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1
 
 - En el siguiente video es posible apreciar el funcionamiento del driver del Ultrasonido Hc-sr04
 <a href="https://drive.google.com/file/d/1e7nmWLr6yBetAY9SGtBAJGUuHZ1iqG_H/view?usp=sharing
-" target="_blank"><img src="https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1Carro.jpeg" 
-alt="(https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1Carro.jpeg)" width="400"/></a>
+" target="_blank"><img src="https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/Ultrasonido.JPG" 
+alt="(https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/Ultrasonido.JPG)" width="400"/></a>
