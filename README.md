@@ -60,6 +60,6 @@ alt="(https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/U
 
 - En el video a continuación se presenta una prueba de la cámara y motores:
 <a href="https://drive.google.com/file/d/1s1ATSUborSTColFX9ysljxoKd6m9SaRN/view?usp=sharing
-" target="_blank"><img src="" 
-alt="()" width="400"/></a>
+" target="_blank"><img src="https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/PruebaCam.PNG" 
+alt="(https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/PruebaCam.PNG)" width="400"/></a>
 
