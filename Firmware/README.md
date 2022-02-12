@@ -130,6 +130,29 @@ Para el caso de parada, se considera solo un valor para entrada 11111. Asi tambi
 
 <a name="movimiento"></a>
 ## Movimiento
+El movimiento del robot se programo en c, tal y como se muestra a continuacion. Este se basa unicamente en el infrarojo para realizar su navegacion.
+
+``` c
+static void w_test(void){
+	unsigned int state = 3;
+	unsigned int cam = 0;
+	
+	while(!(buttons_in_read()&1)){
+
+		state = infrarrojo();
+		ruedas_move_write(state);
+		delay_ms(12);
+		ruedas_move_write(3);
+		servo_test(state);
+		cam = led_test();
+		leds_out_write(cam);
+		delay_ms(100);		
+	}
+
+``` 
+}
+
+
 <p align="center">
   <img width="150" height="75" src=/images/salidamapa.PNG>
 </p>
