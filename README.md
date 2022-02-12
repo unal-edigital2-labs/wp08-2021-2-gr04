@@ -47,7 +47,7 @@ En esta sección se describen los periféricos usados para la elaboración del r
 - Otro problema se presento al integrar el  driver del ultrasonido desarrollado en verilog al Soc. Pues los valores obtenidos a traves del soc es sofware, no concordaban con los valores obtenidos con el driver por si solo.
 
 ## Pruebas funcionales
-
+-En este video es posible observar el funcionamiento del infrarojo, ruedas y la camara.
 
 <a href="https://drive.google.com/drive/folders/142QnFIS4SVECmSSa9qxbLlYzCy9eO4Y_?usp=sharing
 " target="_blank"><img src="https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1Carro.jpeg" 
