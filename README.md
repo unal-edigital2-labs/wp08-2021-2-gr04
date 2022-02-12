@@ -39,7 +39,7 @@ En esta sección se describen los periféricos usados para la elaboración del r
 
 ## [ Firmware ](https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/tree/main/Firmware)
 
- En esta seccion se incluyen los archivos usados para realizar la respectiva integracion de los archivos de hardware a el SOC. Ademas, tambien se incluyen el main.c, la cual se encarga de controlar el robot cartografo desde software, y la respectiva explicacion de funcionamiento para cada una de las funciones usadas.
+ En esta sección se incluyen los archivos usados para realizar la respectiva integración de los archivos de hardware a el SoC. Además, también se incluyen el main.c, la cual se encarga de controlar el robot cartógrafo desde software, y la respectiva explicación de funcionamiento para cada una de las funciones usadas.
 
 ## Problemas presentados
 
