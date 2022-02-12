@@ -39,15 +39,21 @@ En esta sección se describen los periféricos usados para la elaboración del r
 
 ## [ Firmware ](https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/tree/main/Firmware)
 
-En esta seccion se incluyen los archivos usados para realizar la respectiva integracion de los archivos de hardware a el SOC. Ademas, tambien se incluyen el main.c, la cual se encarga de controlar el robot cartografo desde software, y la respectiva explicacion de funcionamiento para cada una de las funciones usadas.
+ En esta seccion se incluyen los archivos usados para realizar la respectiva integracion de los archivos de hardware a el SOC. Ademas, tambien se incluyen el main.c, la cual se encarga de controlar el robot cartografo desde software, y la respectiva explicacion de funcionamiento para cada una de las funciones usadas.
 
 ## Problemas presentados
 
-Desarrollar firmware en C manualmente puede no ser muy bueno si no se tienen buenas prácticas de programación y optimización. Pues se puede llegar a hacer un código que funcione en un IDE pero no al implementarlo por cuestiones de capacidad de almacenamiento
+-Desarrollar firmware en C manualmente puede no ser muy bueno si no se tienen buenas prácticas de programación y optimización. Pues se puede llegar a hacer un código que funcione en un IDE pero no al implementarlo por cuestiones de capacidad de almacenamiento
+- Otro problema se presento al integrar el  driver del ultrasonido desarrollado en verilog al Soc. Pues los valores obtenidos a traves del soc es sofware, no concordaban con los valores obtenidos con el driver por si solo.
 
 ## Pruebas funcionales
+
 
 <a href="https://drive.google.com/drive/folders/142QnFIS4SVECmSSa9qxbLlYzCy9eO4Y_?usp=sharing
 " target="_blank"><img src="https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1Carro.jpeg" 
 alt="(https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1Carro.jpeg)" width="400"/></a>
 
+- En el siguiente video es posible apreciar el funcionamiento del driver del Ultrasonido Hc-sr04
+<a href="https://drive.google.com/file/d/1e7nmWLr6yBetAY9SGtBAJGUuHZ1iqG_H/view?usp=sharing
+" target="_blank"><img src="https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1Carro.jpeg" 
+alt="(https://github.com/unal-edigital2-labs/wp08-2021-2-gr04/blob/main/images/1Carro.jpeg)" width="400"/></a>
