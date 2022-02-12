@@ -26,7 +26,7 @@ En esta sección se describen los periféricos usados para la elaboración del r
 # Radar
 El modulo del radar esta compuesto por el ultrasonido y un servomotor, cada registro se encuentra en el espacio de memoria 0x82001800 y 0x82001000 respectivamente. A continuación se explica como es su implementación en hardware:
 
-![Screenshot](/images/RadarMem.png)
+![Screenshot](/images/radar.JPG)
 
 
 
