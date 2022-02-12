@@ -43,7 +43,7 @@ En esta sección se describen los periféricos usados para la elaboración del r
 
 ## Problemas presentados
 
--Desarrollar firmware en C manualmente puede no ser muy bueno si no se tienen buenas prácticas de programación y optimización. Pues se puede llegar a hacer un código que funcione en un IDE pero no al implementarlo por cuestiones de capacidad de almacenamiento
+- Desarrollar firmware en C manualmente puede no ser muy bueno si no se tienen buenas prácticas de programación y optimización. Pues se puede llegar a hacer un código que funcione en un IDE pero no al implementarlo por cuestiones de capacidad de almacenamiento
 - Otro problema se presento al integrar el  driver del ultrasonido desarrollado en verilog al Soc. Pues los valores obtenidos a traves del soc es sofware, no concordaban con los valores obtenidos con el driver por si solo.
 
 ## Pruebas funcionales
